@@ -14,3 +14,4 @@ thumbs.db
 node_modules
 coverage
 .idea/
+dist/

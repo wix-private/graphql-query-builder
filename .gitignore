@@ -13,3 +13,4 @@ thumbs.db
 # Folders to ignore
 node_modules
 coverage
+.idea/

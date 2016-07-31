@@ -1,5 +1,5 @@
 {
-  "name": "graphql-query-builder",
+  "name": "wix-graphql-query-builder",
   "version": "1.0.1",
   "description": "a simple but powerful graphQL query builder",
   "main": "index.js",
@@ -9,13 +9,17 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "bower": "^1.7.9",
     "chai": "^3.5.0",
     "coveralls": "^2.11.11",
     "istanbul": "^0.4.4",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "wnpm-ci": "^6.1.184"
   },
   "scripts": {
+    "build": ":",
     "test": "mocha ./test.js",
+    "release": "bower publish & wnpm-release",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test.js"
   },
   "repository": {
@@ -37,5 +41,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/codemeasandwich/graphql-query-builder/issues"
+  },
+  "private": false,
+  "publishConfig": {
+    "registry": "http://repo.dev.wix/artifactory/api/npm/npm-local/"
   }
 }

@@ -10,6 +10,7 @@
   "dependencies": {},
   "devDependencies": {
     "bower": "^1.7.9",
+    "bower-auto-release": "^1.0.99",
     "chai": "^3.5.0",
     "coveralls": "^2.11.11",
     "istanbul": "^0.4.4",
@@ -19,8 +20,7 @@
   "scripts": {
     "build": ":",
     "test": "mocha ./test.js",
-    "release": "bower publish & wnpm-release",
-    "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test.js"
+    "release": "bower-auto-release & wnpm-release"
   },
   "repository": {
     "type": "git",

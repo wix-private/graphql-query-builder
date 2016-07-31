@@ -1,7 +1,7 @@
 {
   "name": "graphql-query-builder",
   "main": "index.js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/wix/graphql-query-builder",
   "authors": [
     "danielagreen <danielagr@wix.com>"

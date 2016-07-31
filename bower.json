@@ -1,0 +1,19 @@
+{
+  "name": "graphql-query-builder",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/wix/graphql-query-builder",
+  "authors": [
+    "danielagreen <danielagr@wix.com>"
+  ],
+  "description": "graphql query builder",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ]
+}

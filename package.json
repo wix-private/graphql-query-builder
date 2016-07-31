@@ -23,7 +23,7 @@
     "build": "wix-node-build build",
     "pretest": "npm run build",
     "test": "mocha ./test.js",
-    "release": "bower-auto-release & wnpm-release"
+    "release": "wnpm-release & bower-auto-release"
   },
   "repository": {
     "type": "git",

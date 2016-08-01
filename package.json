@@ -21,6 +21,7 @@
   },
   "scripts": {
     "build": "wix-node-build build",
+    "postinstall": "wix-node-build install",
     "pretest": "npm run build",
     "test": "mocha ./test.js",
     "release": "wnpm-release --no-shrinkwrap; bower-auto-release"

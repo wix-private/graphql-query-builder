@@ -1,6 +1,6 @@
 "use strict"
 var expect = require('chai').expect;
-var Query = require('./dist/index');
+var Query = require('./dist/src/index');
 
 function removeSpaces(textS) {
     return `${textS}`.replace(/\s+/g, '');

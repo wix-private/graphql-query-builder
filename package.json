@@ -24,7 +24,7 @@
     "postinstall": "wix-node-build install",
     "pretest": "npm run build",
     "test": "mocha ./test.js",
-    "release": "wnpm-release --no-shrinkwrap; bower-auto-release"
+    "release": "wnpm-release --no-shrinkwrap; bower-auto-release --dist dist/src"
   },
   "repository": {
     "type": "git",

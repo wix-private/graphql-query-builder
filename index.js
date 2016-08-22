@@ -1,19 +1,19 @@
 var GraphQlQuery = (function () {
-    function GraphQlQuery(_fnNameS, _aliasS_OR_Filter) {
-        this._fnNameS = _fnNameS;
-        this._aliasS_OR_Filter = _aliasS_OR_Filter;
+    function GraphQlQuery(fnNameS, aliasS_OR_Filter) {
+        this.fnNameS = fnNameS;
+        this.aliasS_OR_Filter = aliasS_OR_Filter;
         this.headA = [];
-        if ("string" === typeof _aliasS_OR_Filter) {
-            this.aliasS = _aliasS_OR_Filter;
+        if ("string" === typeof aliasS_OR_Filter) {
+            this.aliasS = aliasS_OR_Filter;
         }
-        else if ("object" === typeof _aliasS_OR_Filter) {
-            this.filter(_aliasS_OR_Filter);
+        else if ("object" === typeof aliasS_OR_Filter) {
+            this.filter(aliasS_OR_Filter);
         }
-        else if (undefined === _aliasS_OR_Filter && 2 == arguments.length) {
+        else if (undefined === aliasS_OR_Filter && 2 == arguments.length) {
             throw new TypeError("You have passed undefined as Second argument to 'GraphQlQuery'");
         }
-        else if (undefined !== _aliasS_OR_Filter) {
-            throw new TypeError("Second argument to 'GraphQlQuery' should be an alias name(String) or filter arguments(Object). was passed " + _aliasS_OR_Filter);
+        else if (undefined !== aliasS_OR_Filter) {
+            throw new TypeError("Second argument to 'GraphQlQuery' should be an alias name(String) or filter arguments(Object). was passed " + aliasS_OR_Filter);
         }
     }
     GraphQlQuery.prototype.filter = function (filtersO) {
@@ -22,20 +22,20 @@ var GraphQlQuery = (function () {
         }
         return this;
     };
-    GraphQlQuery.prototype.setAlias = function (_aliasS) {
-        this.aliasS = _aliasS;
+    GraphQlQuery.prototype.setAlias = function (aliasS) {
+        this.aliasS = aliasS;
         return this;
     };
     GraphQlQuery.prototype.find = function (findA) {
         if (!findA) {
             throw new TypeError("find value can not be >>falsy<<");
         }
-        this.bodyS = this.parceFind((Array.isArray(findA)) ? findA : Array.prototype.slice.call(arguments));
+        this.bodyS = this.parseFind((Array.isArray(findA)) ? findA : Array.prototype.slice.call(arguments));
         return this;
     };
-    GraphQlQuery.prototype.parceFind = function (_levelA) {
-        var propsA = _levelA.map(function (currentValue, index) {
-            var itemX = _levelA[index];
+    GraphQlQuery.prototype.parseFind = function (levelA) {
+        var propsA = levelA.map(function (currentValue, index) {
+            var itemX = levelA[index];
             if (itemX instanceof GraphQlQuery) {
                 return itemX.toString();
             }
@@ -61,7 +61,7 @@ var GraphQlQuery = (function () {
         if (undefined === this.bodyS) {
             throw new ReferenceError("return properties are not defined. use the 'find' function to defined them");
         }
-        return ((this.aliasS) ? (this.aliasS + ":") : "") + " " + this._fnNameS + " " + ((0 < this.headA.length) ? "(" + this.headA.join(",") + ")" : "") + "  { " + this.bodyS + " }";
+        return ((this.aliasS) ? (this.aliasS + ":") : "") + " " + this.fnNameS + " " + ((0 < this.headA.length) ? "(" + this.headA.join(",") + ")" : "") + "  { " + this.bodyS + " }";
     };
     return GraphQlQuery;
 }());

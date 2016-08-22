@@ -3,45 +3,45 @@ class GraphQlQuery {
 	private aliasS;
 	private bodyS;
 
-	constructor(private _fnNameS, private _aliasS_OR_Filter) {
+	constructor(private fnNameS, private aliasS_OR_Filter) {
 		this.headA = [];
 
-		if ("string" === typeof _aliasS_OR_Filter) {
-			this.aliasS = _aliasS_OR_Filter;
-		} else if ("object" === typeof _aliasS_OR_Filter) {
-			this.filter(_aliasS_OR_Filter);
-		} else if (undefined === _aliasS_OR_Filter && 2 == arguments.length) {
+		if ("string" === typeof aliasS_OR_Filter) {
+			this.aliasS = aliasS_OR_Filter;
+		} else if ("object" === typeof aliasS_OR_Filter) {
+			this.filter(aliasS_OR_Filter);
+		} else if (undefined === aliasS_OR_Filter && 2 == arguments.length) {
 			throw new TypeError("You have passed undefined as Second argument to 'GraphQlQuery'");
-		} else if (undefined !== _aliasS_OR_Filter) {
-			throw new TypeError("Second argument to 'GraphQlQuery' should be an alias name(String) or filter arguments(Object). was passed " + _aliasS_OR_Filter);
+		} else if (undefined !== aliasS_OR_Filter) {
+			throw new TypeError("Second argument to 'GraphQlQuery' should be an alias name(String) or filter arguments(Object). was passed " + aliasS_OR_Filter);
 		}
 	}
 
-	filter(filtersO: any) {
+	public filter(filtersO: any): GraphQlQuery {
 		for (let propS in filtersO) {
 			this.headA.push(`${propS}:${("string" === typeof filtersO[propS]) ? JSON.stringify(filtersO[propS]) : filtersO[propS]}`);
 		}
 		return this;
 	}
 
-	setAlias(_aliasS: string) {
-		this.aliasS = _aliasS;
+	public setAlias(aliasS: string): GraphQlQuery {
+		this.aliasS = aliasS;
 		return this;
 	}
 
-	find(findA: any) {
+	public find(findA: any): GraphQlQuery {
 		if (!findA) {
 			throw new TypeError("find value can not be >>falsy<<");
 		}
-		this.bodyS = this.parceFind((Array.isArray(findA)) ? findA : Array.prototype.slice.call(arguments));
-		
+		this.bodyS = this.parseFind((Array.isArray(findA)) ? findA : Array.prototype.slice.call(arguments));
+
 		return this;
 	}
 
-	parceFind(_levelA: Array<any>) {
-		let propsA = _levelA.map(function (currentValue, index) {
+	public parseFind(levelA: Array<any>): string {
+		let propsA = levelA.map(function (currentValue, index) {
 
-			let itemX = _levelA[index];
+			let itemX = levelA[index];
 
 			if (itemX instanceof GraphQlQuery) {
 				return itemX.toString();
@@ -63,12 +63,12 @@ class GraphQlQuery {
 		return propsA.join(",");
 	}
 
-	toString() {
+	public toString(): string {
 		if (undefined === this.bodyS) {
 			throw new ReferenceError("return properties are not defined. use the 'find' function to defined them");
 		}
 
-		return `${ (this.aliasS) ? (this.aliasS + ":") : "" } ${this._fnNameS } ${ (0 < this.headA.length) ? "(" + this.headA.join(",") + ")" : "" }  { ${ this.bodyS } }`;
+		return `${ (this.aliasS) ? (this.aliasS + ":") : "" } ${this.fnNameS } ${ (0 < this.headA.length) ? "(" + this.headA.join(",") + ")" : "" }  { ${ this.bodyS } }`;
 	}
 }
 

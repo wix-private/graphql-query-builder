@@ -1,5 +1,5 @@
-var Query = (function () {
-    function Query(_fnNameS, _aliasS_OR_Filter) {
+var GraphQlQuery = (function () {
+    function GraphQlQuery(_fnNameS, _aliasS_OR_Filter) {
         this._fnNameS = _fnNameS;
         this._aliasS_OR_Filter = _aliasS_OR_Filter;
         this.headA = [];
@@ -10,33 +10,33 @@ var Query = (function () {
             this.filter(_aliasS_OR_Filter);
         }
         else if (undefined === _aliasS_OR_Filter && 2 == arguments.length) {
-            throw new TypeError("You have passed undefined as Second argument to 'Query'");
+            throw new TypeError("You have passed undefined as Second argument to 'GraphQlQuery'");
         }
         else if (undefined !== _aliasS_OR_Filter) {
-            throw new TypeError("Second argument to 'Query' should be an alias name(String) or filter arguments(Object). was passed " + _aliasS_OR_Filter);
+            throw new TypeError("Second argument to 'GraphQlQuery' should be an alias name(String) or filter arguments(Object). was passed " + _aliasS_OR_Filter);
         }
     }
-    Query.prototype.filter = function (filtersO) {
+    GraphQlQuery.prototype.filter = function (filtersO) {
         for (var propS in filtersO) {
             this.headA.push(propS + ":" + (("string" === typeof filtersO[propS]) ? JSON.stringify(filtersO[propS]) : filtersO[propS]));
         }
         return this;
     };
-    Query.prototype.setAlias = function (_aliasS) {
+    GraphQlQuery.prototype.setAlias = function (_aliasS) {
         this.aliasS = _aliasS;
         return this;
     };
-    Query.prototype.find = function (findA) {
+    GraphQlQuery.prototype.find = function (findA) {
         if (!findA) {
             throw new TypeError("find value can not be >>falsy<<");
         }
         this.bodyS = this.parceFind((Array.isArray(findA)) ? findA : Array.prototype.slice.call(arguments));
         return this;
     };
-    Query.prototype.parceFind = function (_levelA) {
+    GraphQlQuery.prototype.parceFind = function (_levelA) {
         var propsA = _levelA.map(function (currentValue, index) {
             var itemX = _levelA[index];
-            if (itemX instanceof Query) {
+            if (itemX instanceof GraphQlQuery) {
                 return itemX.toString();
             }
             else if (!Array.isArray(itemX) && "object" === typeof itemX) {
@@ -57,16 +57,16 @@ var Query = (function () {
         });
         return propsA.join(",");
     };
-    Query.prototype.toString = function () {
+    GraphQlQuery.prototype.toString = function () {
         if (undefined === this.bodyS) {
             throw new ReferenceError("return properties are not defined. use the 'find' function to defined them");
         }
         return ((this.aliasS) ? (this.aliasS + ":") : "") + " " + this._fnNameS + " " + ((0 < this.headA.length) ? "(" + this.headA.join(",") + ")" : "") + "  { " + this.bodyS + " }";
     };
-    return Query;
+    return GraphQlQuery;
 }());
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = Query;
+    module.exports = GraphQlQuery;
 }
 
 //# sourceMappingURL=index.js.map

@@ -1,4 +1,4 @@
-declare class Query {
+declare class GraphQlQuery {
     private _fnNameS;
     private _aliasS_OR_Filter;
     private headA;

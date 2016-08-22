@@ -1,6 +1,6 @@
 "use strict"
 var expect = require('chai').expect;
-var Query = require('./dist/src/index');
+var GraphQlQuery = require('./dist/src/index');
 
 function removeSpaces(textS) {
     return `${textS}`.replace(/\s+/g, '');
@@ -11,59 +11,59 @@ describe("graphql query builder", function() { //log the function
 	it('should allow function chaining', function(){
 		
 		let expeted = `user{name}`;
-		let user = new Query("user").find("name")
+		let user = new GraphQlQuery("user").find("name")
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
 	
-	it('should create a Query with function name & alia', function(){
+	it('should create a GraphQlQuery with function name & alia', function(){
 		
 		let expeted = `sam : user{name}`;
-		let user = new Query("user","sam").find("name")
+		let user = new GraphQlQuery("user","sam").find("name")
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
 	
-	it('should create a Query with function name & input', function(){
+	it('should create a GraphQlQuery with function name & input', function(){
 		
 		let expeted = `user(id:12345){name}`;
-		let user = new Query("user",{id : 12345}).find("name")
+		let user = new GraphQlQuery("user",{id : 12345}).find("name")
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
 	
-	it('should create a Query with function name & input(s)', function(){
+	it('should create a GraphQlQuery with function name & input(s)', function(){
 		
 		let expeted = `user(id:12345, age:34){name}`;
-		let user = new Query("user",{id : 12345, age:34}).find("name")
+		let user = new GraphQlQuery("user",{id : 12345, age:34}).find("name")
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
 	
 	it('should accept a single find value', function(){
 		let expeted = `user{name}`;
-		let user = new Query("user").find("name")
+		let user = new GraphQlQuery("user").find("name")
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
 	
 	it('should accept a single find value with alia', function(){
 		let expeted = `user{nickname:name}`;
-		let user = new Query("user").find({nickname:"name"})
+		let user = new GraphQlQuery("user").find({nickname:"name"})
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
 		
 	it('should accept a multiple find values', function(){
 		let expeted = `user{firstname, lastname}`;
-		let user = new Query("user").find("firstname","lastname")
+		let user = new GraphQlQuery("user").find("firstname","lastname")
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
 	
 	it('should accept an array find values', function(){
 		let expeted = `user{firstname, lastname}`;
-		let user = new Query("user").find(["firstname","lastname"])
+		let user = new GraphQlQuery("user").find(["firstname","lastname"])
 		
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
 	})
@@ -79,10 +79,10 @@ describe("graphql query builder", function() { //log the function
 						}
 					  }`;
 		
-		let profilePicture = new Query("profilePicture",{size : 50});
+		let profilePicture = new GraphQlQuery("profilePicture",{size : 50});
 			profilePicture.find( "uri", "width", "height");
 			
-		let user = new Query("user",{id : 12345});
+		let user = new GraphQlQuery("user",{id : 12345});
 			user.find(["id", {"nickname":"name"}, "isViewerFriend",  {"image":profilePicture}])
 
 		expect(removeSpaces(expeted)).to.equal(removeSpaces(user));
@@ -99,13 +99,13 @@ describe("graphql query builder", function() { //log the function
 						}
 					  }`;
 				
-		let FetchLeeAndSam = new Query("FetchLeeAndSam");
+		let FetchLeeAndSam = new GraphQlQuery("FetchLeeAndSam");
 		
-		let lee = new Query("user",{id : '1'});
+		let lee = new GraphQlQuery("user",{id : '1'});
 		  lee.setAlias('lee');
 		  lee.find(["name"]);
 		  
-		let sam = new Query("user","sam");
+		let sam = new GraphQlQuery("user","sam");
 		  sam.filter({id : '2'});
 		  sam.find("name");
 		  
@@ -115,32 +115,32 @@ describe("graphql query builder", function() { //log the function
 	})
 	
 	it('should throw Error if find input items have zero props', function(){
-		expect(() => new Query("x").find({})).to.throw(Error);
+		expect(() => new GraphQlQuery("x").find({})).to.throw(Error);
 	})
 	
 	it('should throw Error if find input items have multiple props', function(){
-		expect(() => new Query("x").find({a:"z",b:"y"})).to.throw(Error);
+		expect(() => new GraphQlQuery("x").find({a:"z",b:"y"})).to.throw(Error);
 	})
 	
 	it('should throw Error if find is undefined', function(){
-		expect(() => new Query("x").find()).to.throw(Error);
+		expect(() => new GraphQlQuery("x").find()).to.throw(Error);
 	})
 	
 	it('should throw Error if no find values have been set', function(){
-		expect(() => `${new Query("x")}`).to.throw(Error);
+		expect(() => `${new GraphQlQuery("x")}`).to.throw(Error);
 	})
 	
 	it('should throw Error if find is not valid', function(){
-		expect(() => new Query("x").find(123)).to.throw(Error);
+		expect(() => new GraphQlQuery("x").find(123)).to.throw(Error);
 	})
 	
 	it('should throw Error if you accidentally pass an undefined', function(){
 		let alia = undefined;
-		expect(() => new Query("x",alia)).to.throw(Error);
+		expect(() => new GraphQlQuery("x",alia)).to.throw(Error);
 	})
 	
 	it('should throw Error it is not an input object for alias', function(){
-		expect(() => new Query("x",true)).to.throw(Error);
+		expect(() => new GraphQlQuery("x",true)).to.throw(Error);
 	})
 });
 

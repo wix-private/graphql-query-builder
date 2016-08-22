@@ -1,6 +1,6 @@
 'use strict';
 
-var Query = require('../');
+var GraphQlQuery = require('../');
 
 
 /*
@@ -19,9 +19,9 @@ var Query = require('../');
 }
 */
 
-let profilePicture = new Query("profilePicture",{size : 50});
+let profilePicture = new GraphQlQuery("profilePicture",{size : 50});
     profilePicture.find( "uri", "width", "height");
-let user = new Query("user",{id : 3500401});
+let user = new GraphQlQuery("user",{id : 3500401});
     user.find(["id", {"nickname":"name"}, "isViewerFriend",  {"image":profilePicture}])
 
   console.log("user",user+"");
@@ -37,14 +37,14 @@ query FetchLeeAndSam {
 }
 */
 
-let FetchLeeAndSam = new Query("FetchLeeAndSam");
+let FetchLeeAndSam = new GraphQlQuery("FetchLeeAndSam");
 
-let lee = new Query("user",{id : '1'});
+let lee = new GraphQlQuery("user",{id : '1'});
   lee.setAlias('lee');
   lee.find({name:true});
   console.log("lee",lee.toString());
   
-let sam = new Query("user","sam");
+let sam = new GraphQlQuery("user","sam");
   sam.filter({id : '2'});
   sam.find("name");
   console.log("sam",sam+"");

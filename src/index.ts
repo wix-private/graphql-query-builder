@@ -1,4 +1,4 @@
-class Query {
+class GraphQlQuery {
 	private headA;
 	private aliasS;
 	private bodyS;
@@ -11,9 +11,9 @@ class Query {
 		} else if ("object" === typeof _aliasS_OR_Filter) {
 			this.filter(_aliasS_OR_Filter);
 		} else if (undefined === _aliasS_OR_Filter && 2 == arguments.length) {
-			throw new TypeError("You have passed undefined as Second argument to 'Query'");
+			throw new TypeError("You have passed undefined as Second argument to 'GraphQlQuery'");
 		} else if (undefined !== _aliasS_OR_Filter) {
-			throw new TypeError("Second argument to 'Query' should be an alias name(String) or filter arguments(Object). was passed " + _aliasS_OR_Filter);
+			throw new TypeError("Second argument to 'GraphQlQuery' should be an alias name(String) or filter arguments(Object). was passed " + _aliasS_OR_Filter);
 		}
 	}
 
@@ -43,7 +43,7 @@ class Query {
 
 			let itemX = _levelA[index];
 
-			if (itemX instanceof Query) {
+			if (itemX instanceof GraphQlQuery) {
 				return itemX.toString();
 			} else if (!Array.isArray(itemX) && "object" === typeof itemX) {
 				let propsA = Object.keys(itemX);
@@ -73,5 +73,5 @@ class Query {
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-	module.exports = Query;
+	module.exports = GraphQlQuery;
 }

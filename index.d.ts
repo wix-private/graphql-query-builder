@@ -1,5 +1,5 @@
 interface GraphQlQueryConstructor {
-    new (fnNameS: any, aliasS_OR_Filter: any): GraphQlQuery;
+    new (fnNameS: any, aliasS_OR_Filter?: any): GraphQlQuery;
 }
 declare class GraphQlQuery {
     private fnName;

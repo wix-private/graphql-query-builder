@@ -10,7 +10,7 @@ declare class GraphQlQuery {
     constructor(fnName: string, alias_OR_filter?: string | Object);
     filter(filters: Object): GraphQlQuery;
     setAlias(alias: string): GraphQlQuery;
-    find(find: any): GraphQlQuery;
+    find(find: any[]): GraphQlQuery;
     toString(): string;
     private parseFind(levelA);
 }

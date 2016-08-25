@@ -33,7 +33,7 @@ class GraphQlQuery {
 		return this;
 	}
 
-	public find(find: string|Array<string>): GraphQlQuery {
+	public find(find: any): GraphQlQuery {
 		if (!find) {
 			throw new TypeError('find value can not be >>falsy<<');
 		}

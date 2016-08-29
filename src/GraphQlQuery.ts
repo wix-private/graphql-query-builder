@@ -8,7 +8,7 @@ namespace gql {
 	}
 
 	export interface IAlias {
-		[index: string]: string;
+		[index: string]: string | GraphQlQuery;
 	}
 
 	export interface IHead {
@@ -37,21 +37,25 @@ namespace gql {
 			this.isContainer = false;
 		}
 
-		public select(...selects: (string | ISelection)[]): GraphQlQuery {
-			if(this.isContainer){
+		public select(...selects: (string | ISelection | GraphQlQuery)[]): GraphQlQuery {
+			if (this.isContainer) {
 				throw new Error('Can`t use selection on joined query.');
 			}
 
 			this.body = this.body.concat(selects.map((item) => {
-				let selection = <IBody>{};
+				let selection: any = {};
+
 				if (typeof item === 'string') {
 					selection.attr = {[item]: item};
 					selection.argumentsMap = {};
+				} else if (item instanceof GraphQlQuery) {
+					selection = item;
 				} else if (typeof item === 'object') {
 					selection.argumentsMap = <IArgumentsMap>item['_filter'] || {};
 					delete item['_filter'];
 					selection.attr = <IAlias>item;
 				}
+
 				return selection;
 			}));
 			return this;
@@ -90,20 +94,31 @@ namespace gql {
 
 		private handleAlias(attr: IAlias): string {
 			let alias = Object.keys(attr)[0];
-			let value = attr[alias];
+			let value = this.prepareAsInnerQuery(attr[alias]);
+
 			value = (alias !== value) ? `${alias}: ${value}` : value;
 			return value;
 		}
 
 		private buildBody(): string {
 			return this.body.map((item: IBody | GraphQlQuery) => {
-				if (this.isContainer) {
-					let content = item.toString();
-					return content.substr(2, content.length - 4);
+				if (item instanceof GraphQlQuery) {
+					return this.prepareAsInnerQuery(item);
 				} else {
 					return this.handleAlias(item['attr']) + this.handleArguments(item['argumentsMap']);
 				}
 			}).join(' ');
+		}
+
+		private prepareAsInnerQuery(query: string|GraphQlQuery): string {
+			let ret = '';
+			if (query instanceof GraphQlQuery) {
+				ret = query.toString();
+				ret = ret.substr(2, ret.length - 4);
+			} else {
+				ret = query;
+			}
+			return ret;
 		}
 	}
 }

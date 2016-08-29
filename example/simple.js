@@ -1,6 +1,6 @@
 'use strict';
 
-var GraphQlQuery = require('../');
+var GraphQlQuery = require('../dist/src/GraphQlQuery');
 
 
 /*
@@ -10,7 +10,7 @@ var GraphQlQuery = require('../');
     nickname : name,
     isViewerFriend,
     
-    profilePicture( size:50 ) {
+    image: profilePicture( size:50 ) {
         uri,
         width,
         height
@@ -19,12 +19,14 @@ var GraphQlQuery = require('../');
 }
 */
 
-let profilePicture = new GraphQlQuery("profilePicture",{size : 50});
-    profilePicture.find( "uri", "width", "height");
-let user = new GraphQlQuery("user",{id : 3500401});
-    user.find(["id", {"nickname":"name"}, "isViewerFriend",  {"image":profilePicture}])
+let profilePicture = new GraphQlQuery('profilePicture', {size: 50})
+    .select('uri', 'width', 'height');
 
-  console.log("user",user+"");
+let user = new GraphQlQuery('user', {id: 3500401})
+    .select('id', {'nickname': 'name'}, 'isViewerFriend', {'image': profilePicture});
+
+
+console.log('user', user.toString());
 /*
 
 query FetchLeeAndSam {
@@ -37,16 +39,15 @@ query FetchLeeAndSam {
 }
 */
 
-let FetchLeeAndSam = new GraphQlQuery("FetchLeeAndSam");
+let FetchLeeAndSam = new GraphQlQuery('FetchLeeAndSam');
 
-let lee = new GraphQlQuery("user",{id : '1'});
-  lee.setAlias('lee');
-  lee.find({name:true});
-  console.log("lee",lee.toString());
-  
-let sam = new GraphQlQuery("user","sam");
-  sam.filter({id : '2'});
-  sam.find("name");
-  console.log("sam",sam+"");
-  
- console.log(FetchLeeAndSam.find(lee,sam)+"")
+let lee = new GraphQlQuery({lee: 'user'}, {id: '1'});
+lee.select('name');
+
+console.log('lee', lee.toString());
+
+let sam = new GraphQlQuery({sam: 'user'}, {id: '2'});
+sam.select('name');
+console.log('sam', sam + '');
+
+console.log(lee.join(sam).toString());

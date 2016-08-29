@@ -5,7 +5,7 @@ module.exports = function (wallaby) {
         ],
 
         tests: [
-            'test/**/*.test.ts'
+            'test/**/*.spec.ts'
         ],
         env: {
             type: 'node'

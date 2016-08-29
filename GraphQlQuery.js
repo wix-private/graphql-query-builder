@@ -23,6 +23,9 @@ var gql;
                     selection.attr = (_a = {}, _a[item] = item, _a);
                     selection.argumentsMap = {};
                 }
+                else if (item instanceof GraphQlQuery) {
+                    selection = item;
+                }
                 else if (typeof item === 'object') {
                     selection.argumentsMap = item['_filter'] || {};
                     delete item['_filter'];
@@ -63,21 +66,31 @@ var gql;
         };
         GraphQlQuery.prototype.handleAlias = function (attr) {
             var alias = Object.keys(attr)[0];
-            var value = attr[alias];
+            var value = this.prepareAsInnerQuery(attr[alias]);
             value = (alias !== value) ? alias + ": " + value : value;
             return value;
         };
         GraphQlQuery.prototype.buildBody = function () {
             var _this = this;
             return this.body.map(function (item) {
-                if (_this.isContainer) {
-                    var content = item.toString();
-                    return content.substr(2, content.length - 4);
+                if (item instanceof GraphQlQuery) {
+                    return _this.prepareAsInnerQuery(item);
                 }
                 else {
                     return _this.handleAlias(item['attr']) + _this.handleArguments(item['argumentsMap']);
                 }
             }).join(' ');
+        };
+        GraphQlQuery.prototype.prepareAsInnerQuery = function (query) {
+            var ret = '';
+            if (query instanceof GraphQlQuery) {
+                ret = query.toString();
+                ret = ret.substr(2, ret.length - 4);
+            }
+            else {
+                ret = query;
+            }
+            return ret;
         };
         return GraphQlQuery;
     }());

@@ -6,7 +6,7 @@ declare namespace gql {
         [index: string]: string | number | boolean | Object;
     }
     interface IAlias {
-        [index: string]: string;
+        [index: string]: string | GraphQlQuery;
     }
     interface IHead {
         fnName: IAlias;
@@ -24,12 +24,13 @@ declare namespace gql {
         private body;
         private isContainer;
         constructor(fnName: string | IAlias, argumentsMap?: IArgumentsMap);
-        select(...selects: (string | ISelection)[]): GraphQlQuery;
+        select(...selects: (string | ISelection | GraphQlQuery)[]): GraphQlQuery;
         join(...queries: GraphQlQuery[]): GraphQlQuery;
         toString(): string;
         private buildHeader();
         private handleArguments(argumentsMap);
         private handleAlias(attr);
         private buildBody();
+        private prepareAsInnerQuery(query);
     }
 }

@@ -20,6 +20,22 @@ describe('GraphQL Query Builder', () => {
 		});
 	});
 
+	describe('filter', () => {
+		it('should support filter product', () => {
+			const query = new GraphQlQuery('product');
+			query.filter({attr1: 'value1', attr2: 2, attr3: true});
+			expect(query.toString()).to.equal('{ product(attr1: "value1", attr2: 2, attr3: true){} }');
+		});
+
+		it('should allow filter multiple times', () => {
+			const query = new GraphQlQuery('product');
+			query.filter({attr1: 'value1'})
+				.filter({attr2: 2, attr3: true})
+				.filter({attr1: 'value2'});
+			expect(query.toString()).to.equal('{ product(attr1: "value2", attr2: 2, attr3: true){} }');
+		});
+	});
+
 	describe('select', () => {
 		it('should support fields selection', () => {
 			const query = new GraphQlQuery('product')

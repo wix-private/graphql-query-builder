@@ -61,6 +61,16 @@ namespace gql {
 			return this;
 		}
 
+		public filter(argumentsMap: IArgumentsMap): GraphQlQuery {
+			for (let key in argumentsMap) {
+				if (argumentsMap.hasOwnProperty(key)) {
+					this.head.argumentsMap[key] = argumentsMap[key];
+				}
+			}
+
+			return this;
+		}
+
 		public join(...queries: GraphQlQuery[]): GraphQlQuery {
 			const combined = new GraphQlQuery('');
 			combined.isContainer = true;

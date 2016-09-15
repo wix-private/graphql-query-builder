@@ -36,6 +36,14 @@ var gql;
             }));
             return this;
         };
+        GraphQlQuery.prototype.filter = function (argumentsMap) {
+            for (var key in argumentsMap) {
+                if (argumentsMap.hasOwnProperty(key)) {
+                    this.head.argumentsMap[key] = argumentsMap[key];
+                }
+            }
+            return this;
+        };
         GraphQlQuery.prototype.join = function () {
             var queries = [];
             for (var _i = 0; _i < arguments.length; _i++) {

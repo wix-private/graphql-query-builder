@@ -25,6 +25,7 @@ declare namespace gql {
         private isContainer;
         constructor(fnName: string | IAlias, argumentsMap?: IArgumentsMap);
         select(...selects: (string | ISelection | GraphQlQuery)[]): GraphQlQuery;
+        filter(argumentsMap: IArgumentsMap): GraphQlQuery;
         join(...queries: GraphQlQuery[]): GraphQlQuery;
         toString(): string;
         private buildHeader();

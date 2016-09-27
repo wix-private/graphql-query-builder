@@ -89,17 +89,27 @@ namespace gql {
 		}
 
 		private handleArguments(argumentsMap: IArgumentsMap): string {
-			const hasArguments = Object.keys(argumentsMap).length > 0;
-			let args = '';
+			const query = this.objectToString(argumentsMap);
 
-			if (hasArguments) {
-				args = Object.keys(argumentsMap)
-					.map((key: string) => `${key}: ${JSON.stringify(argumentsMap[key])}`)
-					.join(', ');
-				args = `(${args})`;
+			return query ? `(${query})` : '';
+		}
+
+		private getGraphQLValue(value) {
+			if (Array.isArray(value)) {
+				const array = value.map(item => {
+					return this.getGraphQLValue(item);
+				}).join();
+
+				return `[${array}]`;
+			} else if ("object" === typeof value) {
+				return `{${this.objectToString(value)}}`;
+			} else {
+				return JSON.stringify(value);
 			}
+		}
 
-			return args;
+		private objectToString(obj) {
+			return Object.keys(obj).map((key) => `${key}: ${this.getGraphQLValue(obj[key])}`).join(', ');
 		}
 
 		private handleAlias(attr: IAlias): string {
@@ -126,7 +136,7 @@ namespace gql {
 				ret = query.toString();
 				ret = ret.substr(2, ret.length - 4);
 			} else {
-				ret = query;
+				ret = query.toString();
 			}
 			return ret;
 		}

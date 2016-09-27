@@ -18,6 +18,16 @@ describe('GraphQL Query Builder', () => {
 			const query = new GraphQlQuery({alias: 'product'}, {attr1: 'value1', attr2: 2, attr3: true});
 			expect(query.toString()).to.equal('{ alias: product(attr1: "value1", attr2: 2, attr3: true){} }');
 		});
+
+		it('should support nested filtering', () => {
+			const query = new GraphQlQuery('product', {attr1: {attr2: {attr3: {attr4: 'val'}}}});
+			expect(query.toString()).to.equal('{ product(attr1: {attr2: {attr3: {attr4: "val"}}}){} }');
+		});
+
+		it('should handle empty arguments', () => {
+			const query = new GraphQlQuery('product', {});
+			expect(query.toString()).to.equal('{ product{} }');
+		});
 	});
 
 	describe('filter', () => {
@@ -33,6 +43,11 @@ describe('GraphQL Query Builder', () => {
 				.filter({attr2: 2, attr3: true})
 				.filter({attr1: 'value2'});
 			expect(query.toString()).to.equal('{ product(attr1: "value2", attr2: 2, attr3: true){} }');
+		});
+
+		it('should support nested filtering with regular filtering', () => {
+			const query = new GraphQlQuery('product').filter({attr1: {attr2: 'val1'}, attr3: 'val2'});
+			expect(query.toString()).to.equal('{ product(attr1: {attr2: "val1"}, attr3: "val2"){} }');
 		});
 	});
 

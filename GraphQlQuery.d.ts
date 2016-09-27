@@ -30,6 +30,8 @@ declare namespace gql {
         toString(): string;
         private buildHeader();
         private handleArguments(argumentsMap);
+        private getGraphQLValue(value);
+        private objectToString(obj);
         private handleAlias(attr);
         private buildBody();
         private prepareAsInnerQuery(query);

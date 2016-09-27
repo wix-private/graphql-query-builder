@@ -62,15 +62,27 @@ var gql;
             return this.handleAlias(this.head.fnName) + this.handleArguments(this.head.argumentsMap);
         };
         GraphQlQuery.prototype.handleArguments = function (argumentsMap) {
-            var hasArguments = Object.keys(argumentsMap).length > 0;
-            var args = '';
-            if (hasArguments) {
-                args = Object.keys(argumentsMap)
-                    .map(function (key) { return (key + ": " + JSON.stringify(argumentsMap[key])); })
-                    .join(', ');
-                args = "(" + args + ")";
+            var query = this.objectToString(argumentsMap);
+            return query ? "(" + query + ")" : '';
+        };
+        GraphQlQuery.prototype.getGraphQLValue = function (value) {
+            var _this = this;
+            if (Array.isArray(value)) {
+                var array = value.map(function (item) {
+                    return _this.getGraphQLValue(item);
+                }).join();
+                return "[" + array + "]";
             }
-            return args;
+            else if ("object" === typeof value) {
+                return "{" + this.objectToString(value) + "}";
+            }
+            else {
+                return JSON.stringify(value);
+            }
+        };
+        GraphQlQuery.prototype.objectToString = function (obj) {
+            var _this = this;
+            return Object.keys(obj).map(function (key) { return (key + ": " + _this.getGraphQLValue(obj[key])); }).join(', ');
         };
         GraphQlQuery.prototype.handleAlias = function (attr) {
             var alias = Object.keys(attr)[0];
@@ -96,7 +108,7 @@ var gql;
                 ret = ret.substr(2, ret.length - 4);
             }
             else {
-                ret = query;
+                ret = query.toString();
             }
             return ret;
         };

@@ -16,6 +16,13 @@
                 <role>owner</role>
             </roles>
         </developer>
+        <developer>
+            <name>Nachshon Schwartz</name>
+            <email>nachshons@wix.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
     <parent>
         <groupId>com.wixpress.common</groupId>

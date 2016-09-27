@@ -4,7 +4,7 @@ namespace gql {
 	}
 
 	export interface IArgumentsMap {
-		[index: string]: string|number|boolean|Object;
+		[index: string]: string|number|boolean|Object|EnumValue;
 	}
 
 	export interface IAlias {
@@ -85,34 +85,36 @@ namespace gql {
 		}
 
 		private buildHeader(): string {
-			return this.handleAlias(this.head.fnName) + this.handleArguments(this.head.argumentsMap);
+			return this.buildAlias(this.head.fnName) + this.buildArguments(this.head.argumentsMap);
 		}
 
-		private handleArguments(argumentsMap: IArgumentsMap): string {
+		private buildArguments(argumentsMap: IArgumentsMap): string {
 			const query = this.objectToString(argumentsMap);
 
 			return query ? `(${query})` : '';
 		}
 
-		private getGraphQLValue(value) {
+		private getGraphQLValue(value): string {
 			if (Array.isArray(value)) {
-				const array = value.map(item => {
+				const arrayString = value.map(item => {
 					return this.getGraphQLValue(item);
 				}).join();
 
-				return `[${array}]`;
+				return `[${arrayString}]`;
+			} else if (value instanceof EnumValue) {
+				return value.toString();
 			} else if ("object" === typeof value) {
-				return `{${this.objectToString(value)}}`;
+				return '{' + this.objectToString(value) + '}';
 			} else {
 				return JSON.stringify(value);
 			}
 		}
 
-		private objectToString(obj) {
+		private objectToString(obj): string {
 			return Object.keys(obj).map((key) => `${key}: ${this.getGraphQLValue(obj[key])}`).join(', ');
 		}
 
-		private handleAlias(attr: IAlias): string {
+		private buildAlias(attr: IAlias): string {
 			let alias = Object.keys(attr)[0];
 			let value = this.prepareAsInnerQuery(attr[alias]);
 
@@ -125,7 +127,7 @@ namespace gql {
 				if (item instanceof GraphQlQuery) {
 					return this.prepareAsInnerQuery(item);
 				} else {
-					return this.handleAlias(item['attr']) + this.handleArguments(item['argumentsMap']);
+					return this.buildAlias(item['attr']) + this.buildArguments(item['argumentsMap']);
 				}
 			}).join(' ');
 		}
@@ -141,8 +143,28 @@ namespace gql {
 			return ret;
 		}
 	}
+
+	export class EnumValue {
+		private value: string;
+
+		constructor(value: string) {
+			this.value = value;
+		}
+
+		public toString(): string {
+			return this.value;
+		}
+	}
+
+	export function enumValue(value: string): EnumValue {
+		return new EnumValue(value);
+	}
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-	module.exports = gql.GraphQlQuery;
+	module.exports = {
+		GraphQlQuery: gql.GraphQlQuery,
+		EnumValue: gql.EnumValue,
+		enumValue: gql.enumValue
+	}
 }

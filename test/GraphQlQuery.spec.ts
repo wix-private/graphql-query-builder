@@ -1,6 +1,5 @@
 var expect = require('chai').expect;
-var GraphQlQuery: gql.GraphQlQueryFactory = require('../src/GraphQlQuery');
-
+var { GraphQlQuery, enumValue } : { GraphQlQuery: gql.GraphQlQueryFactory, enumValue: (string) => gql.EnumValue } = require('../src/GraphQlQuery');
 
 describe('GraphQL Query Builder', () => {
 	describe('product', () => {
@@ -28,6 +27,20 @@ describe('GraphQL Query Builder', () => {
 			const query = new GraphQlQuery('product', {});
 			expect(query.toString()).to.equal('{ product{} }');
 		});
+	});
+
+	describe('enum value', () => {
+		it('should return value set on toString', () => {
+			const type = 'text';
+			expect(enumValue(type).toString()).to.equal(type);
+		});
+
+		it('should filter without quotes', () => {
+			const query = new GraphQlQuery('domain').filter({key: enumValue('value')});
+			expect(query.toString()).to.equal('{ domain(key: value){} }');
+		});
+
+		//TODO test nested
 	});
 
 	describe('filter', () => {

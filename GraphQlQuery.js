@@ -59,22 +59,25 @@ var gql;
             return this.isContainer ? "{ " + this.buildBody() + " }" : "{ " + this.buildHeader() + "{" + this.buildBody() + "} }";
         };
         GraphQlQuery.prototype.buildHeader = function () {
-            return this.handleAlias(this.head.fnName) + this.handleArguments(this.head.argumentsMap);
+            return this.buildAlias(this.head.fnName) + this.buildArguments(this.head.argumentsMap);
         };
-        GraphQlQuery.prototype.handleArguments = function (argumentsMap) {
+        GraphQlQuery.prototype.buildArguments = function (argumentsMap) {
             var query = this.objectToString(argumentsMap);
             return query ? "(" + query + ")" : '';
         };
         GraphQlQuery.prototype.getGraphQLValue = function (value) {
             var _this = this;
             if (Array.isArray(value)) {
-                var array = value.map(function (item) {
+                var arrayString = value.map(function (item) {
                     return _this.getGraphQLValue(item);
                 }).join();
-                return "[" + array + "]";
+                return "[" + arrayString + "]";
+            }
+            else if (value instanceof EnumValue) {
+                return value.toString();
             }
             else if ("object" === typeof value) {
-                return "{" + this.objectToString(value) + "}";
+                return '{' + this.objectToString(value) + '}';
             }
             else {
                 return JSON.stringify(value);
@@ -84,7 +87,7 @@ var gql;
             var _this = this;
             return Object.keys(obj).map(function (key) { return (key + ": " + _this.getGraphQLValue(obj[key])); }).join(', ');
         };
-        GraphQlQuery.prototype.handleAlias = function (attr) {
+        GraphQlQuery.prototype.buildAlias = function (attr) {
             var alias = Object.keys(attr)[0];
             var value = this.prepareAsInnerQuery(attr[alias]);
             value = (alias !== value) ? alias + ": " + value : value;
@@ -97,7 +100,7 @@ var gql;
                     return _this.prepareAsInnerQuery(item);
                 }
                 else {
-                    return _this.handleAlias(item['attr']) + _this.handleArguments(item['argumentsMap']);
+                    return _this.buildAlias(item['attr']) + _this.buildArguments(item['argumentsMap']);
                 }
             }).join(' ');
         };
@@ -115,9 +118,27 @@ var gql;
         return GraphQlQuery;
     }());
     gql.GraphQlQuery = GraphQlQuery;
+    var EnumValue = (function () {
+        function EnumValue(value) {
+            this.value = value;
+        }
+        EnumValue.prototype.toString = function () {
+            return this.value;
+        };
+        return EnumValue;
+    }());
+    gql.EnumValue = EnumValue;
+    function enumValue(value) {
+        return new EnumValue(value);
+    }
+    gql.enumValue = enumValue;
 })(gql || (gql = {}));
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = gql.GraphQlQuery;
+    module.exports = {
+        GraphQlQuery: gql.GraphQlQuery,
+        EnumValue: gql.EnumValue,
+        enumValue: gql.enumValue
+    };
 }
 
 //# sourceMappingURL=GraphQlQuery.js.map

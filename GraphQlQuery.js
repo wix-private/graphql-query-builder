@@ -7,12 +7,13 @@ var gql;
             this.head.argumentsMap = argumentsMap;
             this.body = [];
             this.isContainer = false;
+            this.isWithoutBody = false;
             var _a;
         }
         GraphQlQuery.prototype.select = function () {
             var selects = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                selects[_i - 0] = arguments[_i];
+                selects[_i] = arguments[_i];
             }
             if (this.isContainer) {
                 throw new Error('Can`t use selection on joined query.');
@@ -47,7 +48,7 @@ var gql;
         GraphQlQuery.prototype.join = function () {
             var queries = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                queries[_i - 0] = arguments[_i];
+                queries[_i] = arguments[_i];
             }
             var combined = new GraphQlQuery('');
             combined.isContainer = true;
@@ -55,8 +56,23 @@ var gql;
             combined.body = combined.body.concat(queries);
             return combined;
         };
+        GraphQlQuery.prototype.withoutBody = function () {
+            if (this.isContainer) {
+                throw new Error('Can`t use withoutBody on joined query.');
+            }
+            this.isWithoutBody = true;
+            return this;
+        };
         GraphQlQuery.prototype.toString = function () {
-            return this.isContainer ? "{ " + this.buildBody() + " }" : "{ " + this.buildHeader() + "{" + this.buildBody() + "} }";
+            if (this.isContainer) {
+                return "{ " + this.buildBody() + " }";
+            }
+            else if (this.isWithoutBody) {
+                return "{ " + this.buildHeader() + " }";
+            }
+            else {
+                return "{ " + this.buildHeader() + "{" + this.buildBody() + "} }";
+            }
         };
         GraphQlQuery.prototype.buildHeader = function () {
             return this.buildAlias(this.head.fnName) + this.buildArguments(this.head.argumentsMap);
@@ -85,7 +101,7 @@ var gql;
         };
         GraphQlQuery.prototype.objectToString = function (obj) {
             var _this = this;
-            return Object.keys(obj).map(function (key) { return (key + ": " + _this.getGraphQLValue(obj[key])); }).join(', ');
+            return Object.keys(obj).map(function (key) { return key + ": " + _this.getGraphQLValue(obj[key]); }).join(', ');
         };
         GraphQlQuery.prototype.buildAlias = function (attr) {
             var alias = Object.keys(attr)[0];

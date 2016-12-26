@@ -23,10 +23,12 @@ declare namespace gql {
         private head;
         private body;
         private isContainer;
+        private isWithoutBody;
         constructor(fnName: string | IAlias, argumentsMap?: IArgumentsMap);
         select(...selects: (string | ISelection | GraphQlQuery)[]): GraphQlQuery;
         filter(argumentsMap: IArgumentsMap): GraphQlQuery;
         join(...queries: GraphQlQuery[]): GraphQlQuery;
+        withoutBody(): GraphQlQuery;
         toString(): string;
         private buildHeader();
         private buildArguments(argumentsMap);

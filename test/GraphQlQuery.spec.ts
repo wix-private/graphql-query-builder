@@ -1,7 +1,7 @@
-var expect = require('chai').expect;
-var { GraphQlQuery, enumValue } : { GraphQlQuery: gql.GraphQlQueryFactory, enumValue: (string) => gql.EnumValue } = require('../src/GraphQlQuery');
-
 describe('GraphQL Query Builder', () => {
+	const expect = require('chai').expect;
+	const { GraphQlQuery, enumValue } : { GraphQlQuery: gql.GraphQlQueryFactory, enumValue: (string) => gql.EnumValue } = require('../src/GraphQlQuery');
+
 	describe('product', () => {
 		it('should include product', () => {
 			const query = new GraphQlQuery('product');
@@ -100,6 +100,28 @@ describe('GraphQL Query Builder', () => {
 		});
 	});
 
+	describe('without body', () => {
+		it('should support query without filters', () => {
+			const query = new GraphQlQuery('product')
+				.withoutBody();
+			expect(query.toString()).to.equal('{ product }');
+		});
+
+		it('should support query with filters', () => {
+			const query = new GraphQlQuery('product')
+				.withoutBody()
+				.filter({attr1: 'value1', attr2: 2, attr3: true});
+			expect(query.toString()).to.equal('{ product(attr1: "value1", attr2: 2, attr3: true) }');
+		});
+
+		it('should not have body even with select', () => {
+			const query = new GraphQlQuery('product')
+				.withoutBody()
+				.select('id', 'name');
+			expect(query.toString()).to.equal('{ product }');
+		});
+	});
+
 	describe('join', () => {
 		it('should support joining 2 queries', () => {
 			const mainMedia = new GraphQlQuery('media').select('url');
@@ -121,6 +143,26 @@ describe('GraphQL Query Builder', () => {
 				.select('id', {totalValue: 'total'});
 			const finalQuery = query1.join(query2);
 			expect(finalQuery.select.bind(finalQuery, '1')).to.throw(Error);
+		});
+
+		it('should throw exception when calling without body on join query', () => {
+			const query1 = new GraphQlQuery('product')
+				.select({productId: 'id'}, 'name', {price: 'productPrice', _filter: {discounted: true}});
+			const query2 = new GraphQlQuery('order')
+				.select('id', {totalValue: 'total'});
+			const finalQuery = query1.join(query2);
+			expect(finalQuery.withoutBody.bind(finalQuery)).to.throw(Error);
+		});
+
+		it('should support joining queries without body with select and with filters', () => {
+			const query1 = new GraphQlQuery('product')
+				.withoutBody();
+			const query2 = new GraphQlQuery('order')
+				.select('id', {totalValue: 'total'});
+			const query3 = new GraphQlQuery('order')
+				.filter({attr1: 'value1', attr2: 2, attr3: true});
+			const finalQuery = query1.join(query2, query3);
+			expect(finalQuery.toString()).to.equal('{ product order{id totalValue: total} order(attr1: "value1", attr2: 2, attr3: true){} }');
 		});
 	});
 });

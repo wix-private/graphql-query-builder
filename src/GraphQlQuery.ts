@@ -29,12 +29,14 @@ namespace gql {
 		private head: IHead;
 		private body: (IBody|GraphQlQuery)[];
 		private isContainer: boolean;
+		private isWithoutBody: boolean;
 
 		constructor(fnName: string | IAlias, argumentsMap: IArgumentsMap = {}) {
 			this.head = typeof fnName === 'string' ? {fnName: {[fnName]: fnName}} : {fnName};
 			this.head.argumentsMap = argumentsMap;
 			this.body = [];
 			this.isContainer = false;
+			this.isWithoutBody = false;
 		}
 
 		public select(...selects: (string | ISelection | GraphQlQuery)[]): GraphQlQuery {
@@ -80,8 +82,23 @@ namespace gql {
 			return combined;
 		}
 
+		public withoutBody(): GraphQlQuery {
+			if (this.isContainer) {
+				throw new Error('Can`t use withoutBody on joined query.');
+			}
+
+			this.isWithoutBody = true;
+			return this;
+		}
+
 		public toString() {
-			return this.isContainer ? `{ ${this.buildBody()} }` : `{ ${this.buildHeader()}{${this.buildBody()}} }`;
+			if (this.isContainer) {
+				return `{ ${this.buildBody()} }`;
+			} else if (this.isWithoutBody) {
+				return `{ ${this.buildHeader()} }`;
+			} else {
+				return `{ ${this.buildHeader()}{${this.buildBody()}} }`;
+			}
 		}
 
 		private buildHeader(): string {

@@ -28,9 +28,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/codemeasandwich/graphql-query-builder.git"
+    "url": "git://github.com/wix/graphql-query-builder.git"
   },
-  "homepage": "https://github.com/codemeasandwich/graphql-query-builder",
+  "homepage": "https://github.com/wix/graphql-query-builder",
   "keywords": [
     "graphql",
     "query",

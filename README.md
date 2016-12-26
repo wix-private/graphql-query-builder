@@ -6,6 +6,7 @@ a simple but powerful graphQL query builder
 
 `npm install wix-graphql-query-builder`
 
+`bower install graphql-query-builder`
 
 # Example
 

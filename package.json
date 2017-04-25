@@ -16,12 +16,12 @@
     "coveralls": "^2.11.11",
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
-    "wix-node-build": "^1.0.372",
-    "wnpm-ci": "^6.1.184"
+    "wnpm-ci": "^6.1.184",
+    "yoshi": "latest"
   },
   "scripts": {
-    "build": "wix-node-build build",
-    "postinstall": "wix-node-build install",
+    "build": "yoshi build",
+    "postinstall": "yoshi install",
     "pretest": "npm run build",
     "test": "mocha ./dist/test/GraphQlQuery.spec.js",
     "release": "wnpm-release --no-shrinkwrap; bower-auto-release --dist dist/src"

@@ -156,5 +156,4 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         enumValue: gql.enumValue
     };
 }
-
 //# sourceMappingURL=GraphQlQuery.js.map

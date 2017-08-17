@@ -7,6 +7,9 @@
     "outDir": "dist",
     "declaration": true
   },
+  "include": [
+    "typings/**/*.d.ts"
+  ],
   "files": [
     "./src/GraphQlQuery.ts",
     "./test/GraphQlQuery.spec.ts"

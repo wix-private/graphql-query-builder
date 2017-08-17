@@ -23,7 +23,7 @@
     "build": "yoshi build",
     "postinstall": "yoshi install",
     "pretest": "npm run build",
-    "test": "mocha ./dist/test/GraphQlQuery.spec.js",
+    "test:unit": "yoshi test --mocha",
     "release": "wnpm-release --no-shrinkwrap; bower-auto-release --dist dist/src"
   },
   "repository": {

@@ -2,13 +2,13 @@ var gql;
 (function (gql) {
     var GraphQlQuery = /** @class */ (function () {
         function GraphQlQuery(fnName, argumentsMap) {
+            var _a;
             if (argumentsMap === void 0) { argumentsMap = {}; }
             this.head = typeof fnName === 'string' ? { fnName: (_a = {}, _a[fnName] = fnName, _a) } : { fnName: fnName };
             this.head.argumentsMap = argumentsMap;
             this.body = [];
             this.isContainer = false;
             this.isWithoutBody = false;
-            var _a;
         }
         GraphQlQuery.prototype.select = function () {
             var selects = [];
@@ -19,6 +19,7 @@ var gql;
                 throw new Error('Can`t use selection on joined query.');
             }
             this.body = this.body.concat(selects.map(function (item) {
+                var _a;
                 var selection = {};
                 if (typeof item === 'string') {
                     selection.attr = (_a = {}, _a[item] = item, _a);
@@ -33,7 +34,6 @@ var gql;
                     selection.attr = item;
                 }
                 return selection;
-                var _a;
             }));
             return this;
         };

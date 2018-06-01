@@ -30,13 +30,13 @@ declare namespace gql {
         join(...queries: GraphQlQuery[]): GraphQlQuery;
         withoutBody(): GraphQlQuery;
         toString(): string;
-        private buildHeader();
-        private buildArguments(argumentsMap);
-        private getGraphQLValue(value);
-        private objectToString(obj);
-        private buildAlias(attr);
-        private buildBody();
-        private prepareAsInnerQuery(query);
+        private buildHeader;
+        private buildArguments;
+        private getGraphQLValue;
+        private objectToString;
+        private buildAlias;
+        private buildBody;
+        private prepareAsInnerQuery;
     }
     class EnumValue {
         private value;

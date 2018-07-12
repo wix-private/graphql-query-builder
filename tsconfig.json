@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "types": ["node"]
   },
   "include": [
     "typings/**/*.d.ts"

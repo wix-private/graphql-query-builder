@@ -9,6 +9,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/node": "^10.5.2",
     "bower": "^1.7.9",
     "bower-auto-release": "^1.0.99",
     "chai": "^3.5.0",

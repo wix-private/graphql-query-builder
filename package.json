@@ -22,7 +22,6 @@
   },
   "scripts": {
     "build": ":",
-    "postinstall": "yoshi install",
     "pretest": "yoshi build",
     "test": "npm run test:unit",
     "test:unit": "yoshi test --mocha",

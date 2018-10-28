@@ -2,11 +2,10 @@
   "name": "wix-graphql-query-builder",
   "version": "1.0.1",
   "description": "a simple but powerful graphQL query builder",
-  "main": "index.js",
   "bin": {},
-  "directories": {
-    "example": "example"
-  },
+  "files": [
+    "dist"
+  ],
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^10.5.2",
@@ -17,7 +16,6 @@
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "typescript": "^2.5.2",
-    "wnpm-ci": "^6.1.184",
     "yoshi": "latest"
   },
   "scripts": {
@@ -25,7 +23,7 @@
     "pretest": "yoshi build",
     "test": "npm run test:unit",
     "test:unit": "yoshi test --mocha",
-    "release": "wnpm-release --no-shrinkwrap; bower-auto-release --dist dist/src"
+    "release": "yoshi release; bower-auto-release --dist dist/src"
   },
   "repository": {
     "type": "git",

